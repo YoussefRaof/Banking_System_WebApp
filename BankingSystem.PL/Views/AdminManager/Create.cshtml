@@ -64,6 +64,8 @@
     <div class="card-body">
         <form asp-action="Create" method="post" class="needs-validation" novalidate>
             @Html.AntiForgeryToken()
+
+            <input type="hidden" name="returnSection" value="managers" />
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
             <div class="row g-3">
@@ -143,7 +145,7 @@
 
             <!-- Form Actions -->
             <div class="d-flex justify-content-between border-top pt-3">
-                <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary">
+                <a asp-controller="Admin" asp-action="Index" asp-route-activeSection="managers" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left me-2"></i>Cancel
                 </a>
                 <button type="submit" class="btn btn-dark">

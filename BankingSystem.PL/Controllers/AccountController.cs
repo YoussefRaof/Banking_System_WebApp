@@ -187,7 +187,7 @@ namespace BankingSystem.PL.Controllers
                             }
                             else if (await _userManager.IsInRoleAsync(user, "Manager"))
                             {
-                                return RedirectToAction("GetBranchDetails", "ManagerBranch", new { id = user.Id });
+                                return RedirectToAction("GetAllCustomers", "ManagerCustomer", new { id = user.Id });
                             }
                             else if (await _userManager.IsInRoleAsync(user, "Teller"))
                             {

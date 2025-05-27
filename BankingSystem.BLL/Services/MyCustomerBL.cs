@@ -46,22 +46,23 @@ namespace BankingSystem.BLL.Services
                 return _context.Customers
                         .Include(c => c.Branch)
                             .ThenInclude(c => c.Tellers)
-                        .Where(c => c.Branch.Tellers.FirstOrDefault()!.Id == tellerID);
-
+                        .ToList();
+            //.Where(c => c.Branch.Tellers.FirstOrDefault()!.Id == tellerID);
+        
             var query = _context.Customers
                 .Include(c => c.Branch)
                     .ThenInclude(b => b.Tellers)
-                .Where(c => c.Branch.Tellers.FirstOrDefault()!.Id == tellerID && c.SSN.ToString()
+                .Where(c => c.SSN.ToString()
                     .Contains(ISearchPaginationRepo<Customer>.MyRegex().Replace(search.Trim(), " ")));
-
+        
             if (!query.Any())
                 query = _context.Customers
                 .Include(c => c.Branch)
                     .ThenInclude(b => b.Tellers)
-                .Where(c => c.Branch.Tellers.FirstOrDefault()!.Id == tellerID && (c.FirstName + " " + c.LastName).ToLower().Trim()
+                .Where(c => (c.FirstName + " " + c.LastName).ToLower().Trim()
                     .Contains(ISearchPaginationRepo<Customer>.MyRegex().Replace(search.ToLower().Trim(), " ")));
-
-
+        
+        
             return query;
         }
 

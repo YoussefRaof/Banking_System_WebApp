@@ -209,6 +209,5 @@ namespace BankingSystem.BogusFakers
 
             return ticketFaker.Generate(count);
         }
-
     }
 }

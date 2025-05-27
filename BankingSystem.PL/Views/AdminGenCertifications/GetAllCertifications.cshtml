@@ -268,7 +268,9 @@
                                     </a>
 
                                     <form asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirmDelete()" class="d-inline">
-                                        <button type="submit" class="btn btn-danger btn-sm" title="Delete" title="Delete">
+                                        <input type="hidden" name="returnSection" value="certifications" />
+
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Delete">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>

@@ -16,7 +16,7 @@ namespace BankingSystem.PL.Controllers.AppManager
         public IActionResult GetAllTickets()
         {
             var ManagerID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (ManagerID == null) return NotFound();
+            //if (ManagerID == null) return NotFound();
 
             var branch = _unitOfWork.Repository<Branch>().GetSingleIncluding(b => b.MyManager.Id == ManagerID);
 
@@ -25,7 +25,7 @@ namespace BankingSystem.PL.Controllers.AppManager
                 .Where(b => b.Account.BranchId == branch.Id)
                 .ToList();
 
-            if (Ticket == null) return NotFound();
+            //if (Ticket == null) return NotFound();
             
             foreach (var ticket in Ticket)
             {
@@ -44,7 +44,7 @@ namespace BankingSystem.PL.Controllers.AppManager
                                                                                     c => c.Customer,
                                                                                     t => t.Teller,
                                                                                     d => d.Customer.FinancialDocument);
-            if (Ticket == null) return NotFound();
+            //if (Ticket == null) return NotFound();
 
             var LoanDetails = _mapper.Map<SupportTicket, TicketDetailsView>(Ticket);
 

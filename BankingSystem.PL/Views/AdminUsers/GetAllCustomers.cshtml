@@ -112,7 +112,7 @@
                         <td>@customer.Branch</td>
                         <td>@customer.JoinDate.ToString("MM/dd/yyyy")</td>
                         <td>
-                            <div class="d-flex gap-2 auto mb-2">
+                            <div class="d-flex gap-2 auto mb-2 justify-content-center">
                                 <span class="badge badge-pill accounts-badge">
                                     Accounts: @(customer.Accounts?.Count ?? 0)
                                 </span>
@@ -124,7 +124,7 @@
                                 </span>
                             </div>
 
-                            <div class="d-flex gap-2 auto">
+                            <div class="d-flex gap-2 auto justify-content-center">
                                 <span class="badge badge-pill transactions-badge">
                                     Transactions: @customer.TransactionsCount
                                 </span>

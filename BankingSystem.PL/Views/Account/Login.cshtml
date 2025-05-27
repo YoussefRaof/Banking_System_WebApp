@@ -9,6 +9,7 @@
 <!-- Font Awesome (optional for other icons) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
+
 <style>
     :root {
         --primary-dark: #213555; /* stronger and more elegant dark blue */
@@ -27,7 +28,7 @@
         background-color: #F5EFE7;
         margin: 0;
         padding: 0;
-        background-image: url('/images/bank-img.jpeg') !important;
+        background-image: url('/images/bank-img.webp') !important;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -93,6 +94,7 @@
     }
 </style>
 
+
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-6">
@@ -127,7 +129,14 @@
                             <span asp-validation-for="Password" class="small" style="color: var(--primary-dark)"></span>
                         </div>
 
-                        <div class="d-grid mb-3 mt-5">
+                        <div class="text-end mt-2">
+                            <a asp-action="ForgotPassword" class="link-primary fw-medium text-decoration-none">
+                                Forget Password?
+                            </a>
+                        </div>
+
+
+                        <div class="d-grid mb-3 mt-3">
                             <button type="submit" class="btn btn-primary btn-lg rounded-3">
                                 Login
                             </button>

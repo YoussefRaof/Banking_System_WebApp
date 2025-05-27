@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    // string userId = ViewBag.userId;
 }
 
 
@@ -11,9 +12,9 @@
 
 @* @if (User.IsInRole("Manager") && User.Identity?.IsAuthenticated == true) *@
 @* { *@
-@*     <partial name="~/Views/ManagerBranch/GetBranchDetails.cshtml" /> *@
+@*     <partial name="~/Views/ManagerSavings/GetAllSavings.cshtml" /> *@
+    @* @await Html.PartialAsync("~/Views/ManagerBranch/GetBranchDetails.cshtml", userId); *@
 @* } *@
-
 
 @* @if (User.IsInRole("Teller") && User.Identity?.IsAuthenticated == true) *@
 @* { *@
@@ -24,6 +25,7 @@
 @*  { *@
 @*     <partial name="~\Views\CustomerAccounts\Index.cshtml" /> *@
 @*  } *@
+
 
 @if (User.Identity?.IsAuthenticated == false)
 {

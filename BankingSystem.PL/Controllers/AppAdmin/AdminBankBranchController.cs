@@ -54,7 +54,7 @@ namespace BankingSystem.PL.Controllers.AppAdmin
         // POST: Branch/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(BranchVM model)
+        public IActionResult Create(BranchVM model, string? returnSection)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace BankingSystem.PL.Controllers.AppAdmin
                     _unitOfWork.Complete();
 
                     TempData["SuccessMessage"] = $"Branch '{branch.Name}' created successfully.";
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("Index", "Admin", new { activeSection = returnSection });
                 }
                 catch (Exception ex)
                 {
@@ -137,7 +137,7 @@ namespace BankingSystem.PL.Controllers.AppAdmin
         }
 
         [HttpPost]
-        public IActionResult Edit(BranchVM model)
+        public IActionResult Edit(BranchVM model, string? returnSection)
         {
             var existingBranch = _unitOfWork.Repository<Branch>()
                 .GetSingleIncluding(b => b.Id == model.Id, b => b.MyManager!);
@@ -206,7 +206,7 @@ namespace BankingSystem.PL.Controllers.AppAdmin
                 _unitOfWork.Complete();
 
                 TempData["SuccessMessage"] = "Branch updated successfully";
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("Index", "Admin", new { activeSection = returnSection });
             }
             catch (Exception ex)
             {
@@ -218,7 +218,7 @@ namespace BankingSystem.PL.Controllers.AppAdmin
 
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, string? returnSection)
         {
             // Get the branch to be deleted
             var branch = _unitOfWork.Repository<Branch>().GetSingleIncluding(
@@ -244,7 +244,7 @@ namespace BankingSystem.PL.Controllers.AppAdmin
                 if (branch.Customers.Any() || branch.Loans.Any() || branch.Savings.Any())
                 {
                     TempData["ErrorMessage"] = "Cannot delete branch because it has associated customers, loans, savings accounts.";
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("Index", "Admin", new { activeSection = returnSection });
                 }
 
                 // Handle the branch manager relationship first
@@ -277,7 +277,7 @@ namespace BankingSystem.PL.Controllers.AppAdmin
                 TempData["ErrorMessage"] = $"An error occurred while trying to delete the branch: {ex.Message}";
             }
 
-            return RedirectToAction("Index", "Admin");
+            return RedirectToAction("Index", "Admin", new { activeSection = returnSection });
         }
     }
 }

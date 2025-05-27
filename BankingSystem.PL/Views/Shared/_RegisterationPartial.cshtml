@@ -2,6 +2,11 @@
 ﻿@using BankingSystem.PL.ViewModels.Auth
 @model RegisterViewModel
 
+@{
+    ViewData["Title"] = "Register";
+}
+
+
 <style>
     :root {
         --primary-dark: rgb(63, 114, 175); /* new primary dark */
@@ -162,26 +167,6 @@
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
 
-    <!-- Birth Date -->
-    <div class="col-md-6 mb-4">
-        <label asp-for="BirthDate" class="form-label"></label>
-        <div class="input-group">
-            <input asp-for="BirthDate" type="date" class="form-control" />
-            @* <i class="fas fa-birthday-cake input-icon"></i> *@
-        </div>
-        <span asp-validation-for="BirthDate" class="text-danger"></span>
-    </div>
-
-    <!-- Join Date -->
-    <div class="col-md-6 mb-4">
-        <label asp-for="JoinDate" class="form-label"></label>
-        <div class="input-group">
-            <input asp-for="JoinDate" type="date" class="form-control" />
-            @* <i class="fas fa-calendar-alt input-icon"></i> *@
-        </div>
-        <span asp-validation-for="JoinDate" class="text-danger"></span>
-    </div>
-
     <!-- Email -->
     <div class="col-md-6 mb-4">
         <label asp-for="Email" class="form-label"></label>
@@ -190,6 +175,16 @@
             <i class="fas fa-envelope input-icon"></i>
         </div>
         <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <!-- Birth Date -->
+    <div class="col-md-6 mb-4">
+        <label asp-for="BirthDate" class="form-label"></label>
+        <div class="input-group">
+            <input asp-for="BirthDate" type="date" class="form-control" />
+            @* <i class="fas fa-birthday-cake input-icon"></i> *@
+        </div>
+        <span asp-validation-for="BirthDate" class="text-danger"></span>
     </div>
 
     <!-- Password -->
@@ -211,6 +206,20 @@
         </div>
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
+
+    <!-- Join Date -->
+    <div class="col-md-6 mb-4">
+        <label asp-for="JoinDate" class="form-label"></label>
+        <div class="input-group">
+            <!-- Hidden input for posting the actual value -->
+            <input asp-for="JoinDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" type="hidden" />
+
+            <!-- Disabled input for showing to the user -->
+            <input value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" type="datetime-local" class="form-control" disabled />
+        </div>
+        <span asp-validation-for="JoinDate" class="text-danger"></span>
+    </div>
+
 
     <!-- Role Selection -->
     @if (ViewData["FixedRole"] != null)

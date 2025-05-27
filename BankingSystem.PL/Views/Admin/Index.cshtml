@@ -548,7 +548,7 @@
 
 
 <script>
-        document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const contentArea = document.getElementById("main-content");
 
         document.querySelectorAll(".nav-link.load-content").forEach(link => {
@@ -557,15 +557,12 @@
                 const url = this.dataset.url;
                 if (!url) return;
 
-                // Optional: Add active class
                 document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
                 this.classList.add('active');
 
-                // Add fade-out class before loading
                 contentArea.classList.add("fade-out");
 
                 setTimeout(() => {
-                    // Fetch and load content
                     fetch(url)
                         .then(response => {
                             if (!response.ok) throw new Error("Failed to load content.");
@@ -573,19 +570,24 @@
                         })
                         .then(html => {
                             contentArea.innerHTML = html;
-                            contentArea.classList.remove("fade-out"); // Fade in after load
+                            contentArea.classList.remove("fade-out");
                         })
                         .catch(error => {
                             contentArea.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
                             contentArea.classList.remove("fade-out");
                         });
-                }, 300); // Match transition duration
+                }, 200);
             });
         });
 
-        // Auto-load Dashboard on page start
-        document.querySelector('[data-url="/Admin/Dashboard"]').click();
+        // Only auto-load dashboard if no activeSection is specified in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeSection = urlParams.get('activeSection');
+        if (!activeSection) {
+            document.querySelector('[data-url="/Admin/Dashboard"]').click();
+        }
     });
+
 </script>
 
 
@@ -631,6 +633,52 @@
     document.addEventListener("DOMContentLoaded", function() {
         // Check for active section parameter
         const urlParams = new URLSearchParams(window.location.search);
+        const activeSection = urlParams.get('activeSection');
+
+        if (activeSection) {
+            // Clean the URL
+            history.replaceState(null, '', window.location.pathname);
+
+            // Map section names to their corresponding URLs
+            const sectionToUrl = {
+                'dashboard': '/Admin/Dashboard',
+                'mybank': '/AdminBankBranch/GetBankDetails',
+                'branches': '/AdminBankBranch/GetAllBranches',
+                'managers': '/AdminManager/GetAllManagers',
+                'tellers': '/AdminUsers/GetAllTellers',
+                'customers': '/AdminUsers/GetAllCustomers',
+                'accounts': '/AdminUsers/GetAllAccounts',
+                'transactions': '/AdminTransactions/GetAllTransactionsBranches',
+                'certifications': '/AdminGenCertifications/GetAllCertifications',
+                'settings': '/Admin/Edit'
+            };
+
+            // Find the link with the corresponding URL and trigger click
+            const targetUrl = sectionToUrl[activeSection];
+            if (targetUrl) {
+                const navLink = document.querySelector(`a[data-url="${targetUrl}"]`);
+                if (navLink) {
+                    // Add slight delay to ensure DOM is ready
+                    setTimeout(() => {
+                        // Update active state
+                        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                        navLink.classList.add('active');
+
+                        // Trigger content load
+                        navLink.click();
+                    }, 50);
+                }
+            }
+        }
+    });
+</script>
+
+
+<!--
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check for active section parameter
+        const urlParams = new URLSearchParams(window.location.search);
 
         if (urlParams.get('activeSection') === 'branches') {
             // Clean the URL
@@ -656,3 +704,4 @@
         // ... rest of your existing navigation script ...
     });
 </script>
+-->

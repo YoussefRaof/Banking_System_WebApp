@@ -18,5 +18,6 @@ namespace BankingSystem.BLL.Interfaces
         {
             return new Regex(@"\s+");
         }
+        
     }
 }

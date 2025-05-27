@@ -41,7 +41,7 @@ public class AdminManagerController(IUnitOfWork unitOfWork, IMapper mapper, User
 
     // POST: Manager/Create
     [HttpPost]
-    public async Task<IActionResult> Create(ManagerVM model)
+    public async Task<IActionResult> Create(ManagerVM model, string? returnSection)
     {
         try
         {
@@ -63,8 +63,6 @@ public class AdminManagerController(IUnitOfWork unitOfWork, IMapper mapper, User
 
                 Discriminator = "Manager",
                 PhoneNumber = model.PhoneNumber
-
-                
             };
 
 
@@ -80,7 +78,7 @@ public class AdminManagerController(IUnitOfWork unitOfWork, IMapper mapper, User
                 ViewBag.Branches = new SelectList(_unitOfWork.Repository<Branch>().GetAll(), "Id", "Name", model.BranchId);
 
 
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("Index", "Admin", new { activeSection = returnSection });
             }
             else
             {
@@ -137,7 +135,7 @@ public class AdminManagerController(IUnitOfWork unitOfWork, IMapper mapper, User
     }
 
     [HttpPost]
-    public IActionResult Edit(ManagerVM managerVM)
+    public IActionResult Edit(ManagerVM managerVM, string? returnSection)
     {
         var existingManager = _unitOfWork.Repository<Manager>().GetSingleIncluding(m => m.Id == managerVM.Id, m => m.Branch!, m => m.Tellers!);
 
@@ -208,12 +206,12 @@ public class AdminManagerController(IUnitOfWork unitOfWork, IMapper mapper, User
         _unitOfWork.Complete();
 
         TempData["SuccessMessage"] = "Manager updated successfully.";
-        return RedirectToAction(nameof(Index), nameof(Admin));
+        return RedirectToAction(nameof(Index), nameof(Admin), new { activeSection = returnSection });
     }
 
 
     [HttpPost]
-    public IActionResult Delete(string id)
+    public IActionResult Delete(string id, string? returnSection)
     {
         // Get the manager to be deleted
         var manager = _unitOfWork.Repository<Manager>().GetSingleIncluding(
@@ -234,7 +232,7 @@ public class AdminManagerController(IUnitOfWork unitOfWork, IMapper mapper, User
             if (manager.Tellers.Any())
             {
                 TempData["ErrorMessage"] = "Cannot delete manager because they are supervising tellers. Please reassign the tellers first.";
-                return RedirectToAction("Index", "Admin");
+                return RedirectToAction("Index", "Admin", new { activeSection = returnSection });
 
             }
 
@@ -260,7 +258,7 @@ public class AdminManagerController(IUnitOfWork unitOfWork, IMapper mapper, User
             TempData["ErrorMessage"] = $"An error occurred while trying to delete the manager: {ex.Message}";
         }
 
-        return RedirectToAction("Index", "Admin");
+        return RedirectToAction("Index", "Admin", new { activeSection = returnSection });
     }
 
     public IActionResult Details(string id)

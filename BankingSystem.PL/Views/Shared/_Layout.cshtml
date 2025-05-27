@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BankingSystem.PL.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <link rel="preload" as="image" href="/images/bank-img.webp" type="image/webp">
 
 
     <style>
@@ -175,12 +177,12 @@
 
         /* Specific styling for logout button */
         .btn-logout {
-            background-color: var(--primary-dark) !important;
+            /* background-color: var(--primary-dark) !important; */
             border-color: var(--primary-dark) !important;
         }
 
             .btn-logout:hover {
-                background-color: var(--btn-hover-bg) !important;
+                background-color: var(--nav-hover-bg) !important;
                 border-color: var(--primary-light) !important;
                 color: var(--white) !important;
                 box-shadow: 0 4px 12px rgba(63, 114, 175, 0.2);
@@ -237,7 +239,7 @@
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <div class="container-fluid">
                     <a class="navbar-brand myItem">
-                        <i class="bi bi-bank2 me-2"></i>Bank Elhaz
+                        <i class="bi bi-bank2 me-2"></i>Banking System
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -370,12 +372,12 @@
                                         @* { *@
                                         @*     <strong>Hello </strong> *@
                                         @* } *@
-                                        <u class="uname">Hello, <strong>@User.Identity.Name</strong></u>
+                                        <u class="uname">Hello, <strong>@User.Identity.Name.Split("@")[0].ToUpper()</strong></u>
                                     </span>
                                 </li>
                                 <li class="nav-item">
                                     <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                                        <button type="submit" class="btn text-white nav-link border-0 bg-transparent" style="color:#697565">Logout</button>
+                                        <button type="submit" class="btn text-white nav-link border-0 btn-logout bg-transparent" style="color:#697565">Logout</button>
                                     </form>
                                 </li>
                             }

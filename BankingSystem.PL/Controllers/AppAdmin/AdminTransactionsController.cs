@@ -32,5 +32,20 @@ namespace BankingSystem.PL.Controllers.AppAdmin
 
             return View(branchTransactions);
         }
+
+
+        public IActionResult Details(int id)
+        {
+            var transaction = _unitOfWork.Repository<Transaction>()
+                .GetAllIncluding(t => t.Customer, t => t.Account, t => t.Payment, t => t.Customer.Branch)
+                .FirstOrDefault(t => t.Id == id);
+
+            if (transaction == null)
+                return NotFound();
+
+            return View(transaction);
+        }
+
+
     }
 }

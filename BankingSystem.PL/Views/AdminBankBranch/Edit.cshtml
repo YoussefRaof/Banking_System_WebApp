@@ -167,6 +167,9 @@
 
             <!-- Form -->
             <form asp-action="Edit" method="post">
+
+                <input type="hidden" name="returnSection" value="branches" />
+
                 <!-- Required Hidden Fields -->
                 <input type="hidden" asp-for="Id" />
                 <input type="hidden" asp-for="Name" />
@@ -198,7 +201,7 @@
                 </div>
 
                 <div class="d-flex justify-content-between mt-4">
-                    <a asp-action="Index" asp-controller="Admin" class="btn btn-secondary" id="back-branch">
+                    <a asp-action="Index" asp-controller="Admin" asp-route-activeSection="branches" class="btn btn-secondary" id="back-branch">
                         <i class="fas fa-arrow-left me-1"></i> Back to Branches
                     </a>
 

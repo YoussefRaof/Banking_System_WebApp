@@ -314,9 +314,10 @@ ViewData["Title"] = "Dashboard";
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <button class="btn btn-warning btn-sm details-btn" data-id="@transaction.Id" title="Details">
+                                                <a asp-action="Details" asp-controller="AdminTransactions" asp-route-id="@transaction.Id" class="btn btn-warning btn-sm details-btn" data-id="@transaction.Id" title="Details">
                                                     <i class="fas fa-eye"></i>
-                                                </button>
+                                                </a>
+
                                                 <button class="btn btn-secondary btn-sm receipt-btn" data-id="@transaction.Id" title="Receipt">
                                                     <i class="fas fa-receipt"></i>
                                                 </button>

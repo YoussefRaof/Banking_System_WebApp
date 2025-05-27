@@ -41,14 +41,16 @@ namespace BankingSystem.PL.Controllers.AppAdmin
         // POST: AdminCertificationsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(GeneralCertificate certificate)
+        public ActionResult Create(GeneralCertificate certificate, string returnSection)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     _genericRepositoryCer.Add(certificate);
-                    return RedirectToAction("Index", "Admin");
+                    //TempData["ActiveSection"] = "certifications";
+
+                    return RedirectToAction("Index", "Admin", new { activeSection = returnSection });
                 }
                 catch (Exception ex)
                 {
@@ -69,14 +71,14 @@ namespace BankingSystem.PL.Controllers.AppAdmin
         // POST: AdminCertificationsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(GeneralCertificate certificate)
+        public ActionResult Edit(GeneralCertificate certificate, string? returnSection)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     _genericRepositoryCer.Update(certificate);
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("Index", "Admin", new { activeSection = returnSection });
                 }
                 catch (Exception ex)
                 {
@@ -91,10 +93,10 @@ namespace BankingSystem.PL.Controllers.AppAdmin
         // POST: AdminCertificationsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(GeneralCertificate certificate)
+        public ActionResult Delete(GeneralCertificate certificate, string returnSection)
         {
             _genericRepositoryCer.Delete(certificate);
-            return RedirectToAction("Index", "Admin");
+            return RedirectToAction("Index", "Admin", new { activeSection = returnSection });
         }
 
     }

@@ -6,6 +6,7 @@ using BankingSystem.PL.ViewModels.Manager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Claims;
 
@@ -23,16 +24,16 @@ namespace BankingSystem.PL.Controllers
         public ActionResult GetAllTellers(string id)
         {
             var manager = _unitOfWork.Repository<DAL.Models.Manager>().GetSingleIncluding(b => b.Id == id);
-            if (manager == null)
-            {
-                return NotFound($"Manager with ID {id} not found.");
-            }
+            //if (manager == null)
+            //{
+            //    return NotFound($"Manager with ID {id} not found.");
+            //}
 
             var branchId = manager.BranchId;
-            if (branchId == null)
-            {
-                return NotFound($"Branch with ID {branchId} not found.");
-            }
+            //if (branchId == null)
+            //{
+            //    return NotFound($"Branch with ID {branchId} not found.");
+            //}
 
             var employees = _unitOfWork.Repository<Teller>()
                 .GetAllIncluding(e => e.Branch, e => e.Department)
@@ -48,10 +49,10 @@ namespace BankingSystem.PL.Controllers
             var employee = _unitOfWork.Repository<Teller>()
                 .GetSingleIncluding(e => e.Id == id, e => e.Branch, e => e.Department);
 
-            if (employee == null)
-            {
-                return NotFound();
-            }
+            //if (employee == null)
+            //{
+            //    return NotFound();
+            //}
 
             var tellerDetailsViewModel = _mapper.Map<TellerDetailsViewModel>(employee);
 
@@ -66,8 +67,8 @@ namespace BankingSystem.PL.Controllers
             var managerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var manager = _unitOfWork.Repository<DAL.Models.Manager>().GetSingleIncluding(m => m.Id == managerId);
 
-            if (manager == null)
-                return NotFound("Manager not found");
+            //if (manager == null)
+            //    return NotFound("Manager not found");
 
             ViewData["FixedRole"] = "Teller";
             return View("~/Views/Account/Register.cshtml");
@@ -79,8 +80,8 @@ namespace BankingSystem.PL.Controllers
             var managerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var manager = _unitOfWork.Repository<DAL.Models.Manager>().GetSingleIncluding(m => m.Id == managerId);
 
-            if (manager == null || manager.BranchId == null)
-                return NotFound("Manager or Branch not found");
+            //if (manager == null || manager.BranchId == null)
+            //    return NotFound("Manager or Branch not found");
 
             if (UserToRegister != null && ModelState.IsValid)
             {
@@ -107,8 +108,7 @@ namespace BankingSystem.PL.Controllers
                     }
                 }
             }
-
-            return View(nameof(Register), UserToRegister);
+                return View(nameof(Register), UserToRegister);
         }
 
         [HttpGet]
@@ -116,10 +116,10 @@ namespace BankingSystem.PL.Controllers
         {
             var teller = _unitOfWork.Repository<Teller>()
                 .GetSingleIncluding(e => e.Id == id, e => e.Branch, e => e.Branch.MyManager, e => e.Department);
-            if (teller == null)
-            {
-                return NotFound();
-            }
+            //if (teller == null)
+            //{
+            //    return NotFound();
+            //}
 
             var tellerDetailsViewModel = _mapper.Map<TellerDetailsViewModel>(teller);
             tellerDetailsViewModel.BranchName = teller.Branch?.Name;
@@ -139,10 +139,10 @@ namespace BankingSystem.PL.Controllers
             {
                 var teller = _unitOfWork.Repository<Teller>()
                     .GetSingleIncluding(e => e.Id == tellerDetailsViewModel.Id, e => e.Branch, e => e.Department, e => e.Branch.MyManager);
-                if (teller == null)
-                {
-                    return NotFound();
-                }
+                //if (teller == null)
+                //{
+                //    return NotFound();
+                //}
 
                 _mapper.Map(tellerDetailsViewModel, teller);
                 _unitOfWork.Complete();
@@ -155,10 +155,10 @@ namespace BankingSystem.PL.Controllers
         {
             var teller = _unitOfWork.Repository<Teller>()
                 .GetSingleIncluding(e => e.Id == id, e => e.Branch, e => e.Branch.MyManager, e => e.Department);
-            if (teller == null)
-            {
-                return NotFound();
-            }
+            //if (teller == null)
+            //{
+            //    return NotFound();
+            //}
             var tellerDetailsViewModel = _mapper.Map<TellerDetailsViewModel>(teller);
             tellerDetailsViewModel.BranchName = teller.Branch?.Name;
             tellerDetailsViewModel.DepartmentName = teller.Department?.Name;
@@ -169,10 +169,10 @@ namespace BankingSystem.PL.Controllers
         {
             var teller = _unitOfWork.Repository<Teller>()
                 .GetSingleIncluding(e => e.Id == tellerDetails.Id, e => e.Branch, e => e.Department, e => e.Branch.MyManager);
-            if (teller == null)
-            {
-                return NotFound();
-            }
+            //if (teller == null)
+            //{
+            //    return NotFound();
+            //}
             _unitOfWork.Repository<Teller>().Delete(teller);
             _unitOfWork.Complete();
             return RedirectToAction("GetAllTellers", new { id = teller.Branch.MyManager.Id });

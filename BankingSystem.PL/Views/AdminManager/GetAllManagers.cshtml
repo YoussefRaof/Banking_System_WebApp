@@ -88,6 +88,8 @@
                                             </a>
 
                                             <form asp-action="Delete" asp-route-id="@item.Id" method="post" onsubmit="return confirmDelete()" class="d-inline">
+                                                <input type="hidden" name="returnSection" value="managers" />
+
                                                 <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
                                                     <i class="bi bi-trash"></i>
                                                 </button>

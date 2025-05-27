@@ -5,7 +5,6 @@
     ViewData["Title"] = "Create Branch";
 }
 
-
 <style>
     body {
         background-color: #1a1a1a !important;
@@ -29,7 +28,6 @@
     }
 </style>
 
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-8 mx-auto">
@@ -39,6 +37,7 @@
                 </div>
                 <div class="card-body">
                     <form asp-action="Create" method="post">
+                        <input type="hidden" name="returnSection" value="branches" />
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
                         <div class="row mb-3">
@@ -64,7 +63,12 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label asp-for="Location" class="form-label">Location</label>
-                                    <input asp-for="Location" class="form-control" placeholder="Long,Lat (30.159,33.785)" />
+                                    <div class="input-group">
+                                        <input asp-for="Location" id="locationInput" class="form-control" placeholder="Lat,Long (30.159,33.785)" readonly />
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#mapModal">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                    </div>
                                     <span asp-validation-for="Location" class="text-danger"></span>
                                 </div>
                             </div>
@@ -95,7 +99,7 @@
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">
-                            <a asp-controller="Admin" asp-action="Index" class="btn btn-secondary">
+                            <a asp-controller="Admin" asp-action="Index" asp-route-activeSection="branches" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-1"></i> Back to List
                             </a>
 
@@ -110,18 +114,73 @@
     </div>
 </div>
 
+<!-- Modal for Map -->
+<div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="mapModalLabel">Select Location on Map</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="height: 500px;">
+                <div id="map" style="height: 100%; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        $(document).ready(function() {
-            // Set default opening/closing times
-            if (!$("#Opens").val()) {
-                $("#Opens").val("09:00");
-            }
 
-            if (!$("#Closes").val()) {
-                $("#Closes").val("17:00");
-            }
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALQ3AwOodSeIwxN1QdbtbHlIJpe7iobEo"></script>
+
+    <script>
+        let map, marker;
+
+        function initMap() {
+            const defaultPosition = { lat: 26.8206, lng: 30.8025 };
+
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: defaultPosition,
+                zoom: 6
+            });
+
+            marker = new google.maps.Marker({
+                position: defaultPosition,
+                map: map,
+                draggable: true,
+                icon: {
+                    url: "http:maps.google.com/mapfiles/ms/icons/red-dot.png"
+                }
+            });
+
+        marker.addListener('dragend', function (e) {
+            let lat = e.latLng.lat().toFixed(4);  
+            let lng = e.latLng.lng().toFixed(4);  
+            document.getElementById("locationInput").value = `${lat},${lng}`;  
         });
+
+        map.addListener("click", function (e) {
+            let lat = e.latLng.lat().toFixed(4); 
+            let lng = e.latLng.lng().toFixed(4);  
+
+            marker.setPosition(e.latLng);
+            document.getElementById("locationInput").value = `${lat},${lng}`;  
+        });
+
+        }
+
+        $('#mapModal').on('shown.bs.modal', function () {
+            setTimeout(() => {
+                initMap();
+            }, 500);
+        });
+
+        $(document).ready(function () {
+            if (!$("#Opens").val()) $("#Opens").val("09:00");
+            if (!$("#Closes").val()) $("#Closes").val("17:00");
+        });
+
     </script>
 }

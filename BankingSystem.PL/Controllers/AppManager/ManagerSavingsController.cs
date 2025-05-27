@@ -23,7 +23,7 @@ namespace BankingSystem.PL.Controllers.AppManager
             var managerId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             var manager = _unitOfWork.Repository<DAL.Models.Manager>().GetSingleIncluding(b => b.Id == User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            if (manager?.BranchId == null) return NotFound("Manager or branch not found");
+            //if (manager?.BranchId == null) return NotFound("Manager or branch not found");
 
 
             var savings = _unitOfWork.Repository<Savings>()
@@ -48,10 +48,10 @@ namespace BankingSystem.PL.Controllers.AppManager
             }
 
             var saving = _unitOfWork.Repository<Savings>().Get(model.Id);
-            if (saving == null)
-            {
-                return NotFound();
-            }
+            //if (saving == null)
+            //{
+            //    return NotFound();
+            //}
 
             // Selective update
             saving.Currency = model.Currency;
